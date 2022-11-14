@@ -3,7 +3,7 @@ const SPADE = "♠";
 const CLUB = "♣";
 const DIAMOND = "♦";
 
-interface CardProp {
+export interface CardProp {
   label: string; // "A", "1", "2"...
   suit: string; // "♥", "♠", "♣", "♦"
   color: string; // "red" or "black"
