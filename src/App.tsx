@@ -1,11 +1,14 @@
 import React from "react";
 import { cards } from "./helpers/cards";
+import { CardProp } from "./helpers/interfaces";
 import Card from "./components/cards";
-import { PlayerSeat, DealerSeat, BlackJacker } from "./helpers/seat";
+import { PlayerSeat, DealerSeat } from "./helpers/seat";
+import { BlackJacker } from "./helpers/interfaces";
 // import Grid from '@mui/material/Grid'; // Build faster
 import { Grid } from "@mui/material"; // Easier to read code
 
 import "./App.css";
+import PlayerHand from "./components/player";
 
 function App() {
   const playerNames = React.useMemo(
@@ -24,6 +27,8 @@ function App() {
     }))
   );
 
+  const [cardDeck, setCardDeck] = React.useState<CardProp[]>(cards);
+
   return (
     <div className="App">
       <Grid container spacing={2} direction="row" sx={{ minHeight: "100vh" }}>
@@ -31,7 +36,10 @@ function App() {
           .fill(0)
           .map((_, i) => (
             <Grid item xs={4} key={i} border={1}>
-              {players.find((player) => player.seat === i)?.name}
+              <PlayerHand
+                playerInfo={players.find((player) => player.seat === i)}
+                hand={[]}
+              />
               {i === DealerSeat && "Dealer"}
             </Grid>
           ))}

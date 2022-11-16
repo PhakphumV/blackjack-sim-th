@@ -1,11 +1,3 @@
-export interface BlackJacker {
-  name: string;
-  seat: number;
-  isPlayer: boolean;
-}
-
-export interface SeatProp {}
-
 // Grid size 3x4
 export const PlayerSeat: number[] = [5, 8, 11, 10, 9, 6, 3];
 
