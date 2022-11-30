@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Blackjack Simulation Demo - Thailand
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is to create a blackjack simulation which will be played by different bots to find different winning strategies and factors that support players winning. The whole project lifecycle was lived on [my personal youtube channel](https://www.youtube.com/channel/UCSrj9Qv5VugbrHCTnZ2mInw), collaborated with a developer [Praphan.O](https://github.com/e23thr)
 
 ## Available Scripts
 
