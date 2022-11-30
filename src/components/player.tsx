@@ -3,11 +3,10 @@ import { BlackJacker, CardProp } from "../helpers/interfaces";
 import Card from "./cards";
 
 interface PlayerHandProp {
-  hand: CardProp[];
   playerInfo: BlackJacker | undefined;
 }
 
-const PlayerHand = ({ hand, playerInfo }: PlayerHandProp) => {
+const PlayerHand = ({ playerInfo }: PlayerHandProp) => {
   if (!playerInfo) return null;
 
   return (
@@ -16,13 +15,14 @@ const PlayerHand = ({ hand, playerInfo }: PlayerHandProp) => {
         {playerInfo.name}
       </Grid>
       <Grid item container direction="row" sx={{ textAlign: "center" }}>
-        {hand.map((card) => (
+        {playerInfo.cards.map((card) => (
           <Grid item key={card.label + card.suit}>
             <Card
               label={card.label}
               suit={card.suit}
               color={card.color}
               point={card.point}
+              concealed={card.concealed}
             />
           </Grid>
         ))}
