@@ -1,4 +1,4 @@
-import { CardProp } from "../cards";
+import { CardProp } from "../helpers/interfaces";
 
 const Card = ({ label, suit, color, point }: CardProp) => {
   return (

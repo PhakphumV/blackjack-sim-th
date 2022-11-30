@@ -1,14 +1,8 @@
+import { CardProp } from "./interfaces";
 const HEART = "♥";
 const SPADE = "♠";
 const CLUB = "♣";
 const DIAMOND = "♦";
-
-export interface CardProp {
-  label: string; // "A", "1", "2"...
-  suit: string; // "♥", "♠", "♣", "♦"
-  color: string; // "red" or "black"
-  point: number | number[];
-}
 
 // สร้างตัวแปร cards จาก CardPro[] เพื่อเก็บข้อมูลของไพ่
 export const cards: CardProp[] = [
