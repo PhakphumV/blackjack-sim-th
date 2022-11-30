@@ -1,3 +1,5 @@
+import shuffle from "lodash/shuffle";
+
 import { CardProp } from "./interfaces";
 const HEART = "♥";
 const SPADE = "♠";
@@ -59,3 +61,5 @@ export const cards: CardProp[] = [
   { label: "Q", suit: DIAMOND, color: "red", point: 10 },
   { label: "K", suit: DIAMOND, color: "red", point: 10 },
 ];
+
+export const shuffleCards = () => shuffle(cards);
