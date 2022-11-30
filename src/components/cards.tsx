@@ -1,13 +1,22 @@
 import { CardProp } from "../helpers/interfaces";
+import Fade from "@mui/material/Fade";
 
-const Card = ({ label, suit, color, point }: CardProp) => {
+const Card = ({ label, suit, color, concealed }: CardProp) => {
+  const backgroundColor = concealed ? "gray" : "white";
+
   return (
-    <div style={{ width: 80, height: 50, backgroundColor: "white" }}>
-      <h1 style={{ color: color }}>
-        {label}
-        {suit}
-      </h1>
-    </div>
+    <Fade
+      in={true}
+      timeout={1000}
+      style={{
+        width: 80,
+        height: 100,
+        backgroundColor: backgroundColor,
+        marginRight: 5,
+      }}
+    >
+      <h1 style={{ color: color }}>{concealed ? "" : `${label}${suit}`}</h1>
+    </Fade>
   );
 };
 
