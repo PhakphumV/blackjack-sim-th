@@ -1,12 +1,14 @@
-import { Grid } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import { BlackJacker, CardProp } from "../helpers/interfaces";
 import Card from "./cards";
 
 interface PlayerHandProp {
   playerInfo: BlackJacker | undefined;
+  isReady: boolean;
+  onHit: () => void;
 }
 
-const PlayerHand = ({ playerInfo }: PlayerHandProp) => {
+const PlayerHand = ({ playerInfo, isReady, onHit }: PlayerHandProp) => {
   if (!playerInfo) return null;
 
   return (
@@ -27,6 +29,21 @@ const PlayerHand = ({ playerInfo }: PlayerHandProp) => {
           </Grid>
         ))}
       </Grid>
+      {playerInfo.isPlayerActive && isReady ? (
+        <Grid
+          item
+          container
+          direction="row-reverse"
+          spacing={2}
+          paddingRight={2}
+        >
+          <Grid item>
+            <Button variant="contained" onClick={onHit}>
+              Hit
+            </Button>
+          </Grid>
+        </Grid>
+      ) : null}
     </Grid>
   );
 };

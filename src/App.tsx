@@ -15,6 +15,7 @@ const dealer: BlackJacker = {
   seat: DealerSeat,
   cards: [],
   isPlayer: false,
+  isPlayerActive: false,
 };
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
   );
 
   const [isGameReady, setGameReady] = React.useState<boolean>(false);
+  const [playerIndex, setPlayerIndex] = React.useState<number>(0);
 
   const [players, setPlayers] = React.useState<BlackJacker[]>(
     playerNames
@@ -36,6 +38,7 @@ function App() {
             name: name,
             seat: PlayerSeat[index],
             isPlayer: true,
+            isPlayerActive: false,
             cards: [],
           } as BlackJacker)
       )
@@ -74,15 +77,16 @@ function App() {
     if (!dealerPlayer) return;
     // ผู้เล่น 7 คน + dealer 1 คน โดยแจกคนละ 2 ใบ = แจก 16 ใบ
     for (let i = 0; i < 16; i++) {
-      playerDrawCard(i % 8, i > 14, i * 500);
+      playerDrawCard(i % 8, i > 14, i * 50);
     }
     setTimeout(() => {
       setGameReady(true);
-    }, 16 * 500);
+    }, 16 * 50);
   };
 
   const handleStartGame = () => {
     setGameReady(false);
+    setPlayerIndex(0);
     setPlayers(
       playerNames
         .map(
@@ -91,6 +95,7 @@ function App() {
               name: name,
               seat: PlayerSeat[index],
               isPlayer: true,
+              isPlayerActive: index === 0,
               cards: [],
             } as BlackJacker)
         )
@@ -107,18 +112,25 @@ function App() {
       <Grid container spacing={2} direction="row" sx={{ minHeight: "100vh" }}>
         {Array(12)
           .fill(0)
-          .map((_, i) => (
-            <Grid item xs={4} key={i} border={1}>
-              <PlayerHand
-                playerInfo={players.find((player) => player.seat === i)}
-              />
-              {i === DeckSeat ? (
-                <Button variant="contained" onClick={handleStartGame}>
-                  Start Game
-                </Button>
-              ) : null}
-            </Grid>
-          ))}
+          .map((_, i) => {
+            const player = players.find((player) => player.seat === i);
+            return (
+              <Grid item xs={4} key={i} border={1}>
+                <PlayerHand
+                  isReady={isGameReady}
+                  onHit={() => {
+                    playerDrawCard(playerIndex, false, 50);
+                  }}
+                  playerInfo={player}
+                />
+                {i === DeckSeat ? (
+                  <Button variant="contained" onClick={handleStartGame}>
+                    Start Game
+                  </Button>
+                ) : null}
+              </Grid>
+            );
+          })}
       </Grid>
     </div>
   );

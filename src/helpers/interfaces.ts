@@ -10,6 +10,7 @@ export interface BlackJacker {
   name: string;
   seat: number;
   isPlayer: boolean;
+  isPlayerActive: boolean;
   cards: CardProp[];
 }
 
