@@ -6,9 +6,15 @@ interface PlayerHandProp {
   playerInfo: BlackJacker | undefined;
   isReady: boolean;
   onHit: () => void;
+  onStand: () => void;
 }
 
-const PlayerHand = ({ playerInfo, isReady, onHit }: PlayerHandProp) => {
+const PlayerHand = ({
+  playerInfo,
+  isReady,
+  onHit,
+  onStand,
+}: PlayerHandProp) => {
   if (!playerInfo) return null;
 
   return (
@@ -29,7 +35,7 @@ const PlayerHand = ({ playerInfo, isReady, onHit }: PlayerHandProp) => {
           </Grid>
         ))}
       </Grid>
-      {playerInfo.isPlayerActive && isReady ? (
+      {playerInfo.isPlayerActive && isReady && playerInfo.isPlayer ? (
         <Grid
           item
           container
@@ -37,6 +43,11 @@ const PlayerHand = ({ playerInfo, isReady, onHit }: PlayerHandProp) => {
           spacing={2}
           paddingRight={2}
         >
+          <Grid item>
+            <Button variant="outlined" onClick={onStand}>
+              Stand
+            </Button>
+          </Grid>
           <Grid item>
             <Button variant="contained" onClick={onHit}>
               Hit

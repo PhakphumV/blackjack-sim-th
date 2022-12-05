@@ -107,6 +107,28 @@ function App() {
     }, 250);
   };
 
+  React.useEffect(() => {
+    setPlayers((prevPlayer) => {
+      return prevPlayer.map((player, idx) => {
+        return {
+          ...player,
+          isPlayerActive: idx === playerIndex,
+        };
+        // if (idx === playerIndex) {
+        //   return {
+        //     ...player,
+        //     isPlayerActive: true,
+        //   };
+        // }
+
+        // return {
+        //   ...player,
+        //   isPlayerActive: false,
+        // };
+      });
+    });
+  }, [playerIndex]);
+
   return (
     <div className="App">
       <Grid container spacing={2} direction="row" sx={{ minHeight: "100vh" }}>
@@ -120,6 +142,9 @@ function App() {
                   isReady={isGameReady}
                   onHit={() => {
                     playerDrawCard(playerIndex, false, 50);
+                  }}
+                  onStand={() => {
+                    setPlayerIndex((prev) => prev + 1);
                   }}
                   playerInfo={player}
                 />
