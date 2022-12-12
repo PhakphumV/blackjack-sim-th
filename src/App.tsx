@@ -58,19 +58,39 @@ function App() {
         const [firstCard, ...restCards] = prevCardDeck;
         const clonedCard = { ...firstCard };
         setPlayers((prevPlayers) => {
+          console.log("setPlayers");
           return prevPlayers.map((player, idx) => {
-            const clonedPlayer = { ...player, cards: [...player.cards] };
             if (idx === playerIndex) {
+              const clonedPlayer = { ...player, cards: [...player.cards] };
               clonedCard.concealed = concealed;
               clonedPlayer.cards.push(clonedCard);
+              return clonedPlayer;
             }
-            return clonedPlayer;
+            return player;
           });
         });
         return restCards;
       });
     }, delay);
   };
+
+  const onHit = (playerIdx: number) => {
+    console.log("onHit");
+    playerDrawCard(playerIdx, false, 50);
+  };
+
+  const onStand = (playerIdx: number) => {
+    setPlayerIndex((prev) => playerIdx + 1);
+  };
+
+  const onDealerGotBlackJack = () => {};
+
+  // const onBusted = React.useCallback(() => {
+  //   return (playerIdx: number) => {
+  //     setPlayerIndex((prev) => prev + 1);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const gameIsReady = () => {
     const dealerPlayer = players.find((player) => !player.isPlayer);
@@ -109,6 +129,7 @@ function App() {
 
   React.useEffect(() => {
     setPlayers((prevPlayer) => {
+      console.log("useEffect on playerIndex");
       return prevPlayer.map((player, idx) => {
         return {
           ...player,
@@ -129,6 +150,7 @@ function App() {
     });
   }, [playerIndex]);
 
+  console.log("playerIndex", playerIndex);
   return (
     <div className="App">
       <Grid container spacing={2} direction="row" sx={{ minHeight: "100vh" }}>
@@ -136,16 +158,16 @@ function App() {
           .fill(0)
           .map((_, i) => {
             const player = players.find((player) => player.seat === i);
+            const playerIdx = PlayerSeat.findIndex((seat) => seat === i);
             return (
               <Grid item xs={4} key={i} border={1}>
                 <PlayerHand
                   isReady={isGameReady}
-                  onHit={() => {
-                    playerDrawCard(playerIndex, false, 50);
-                  }}
-                  onStand={() => {
-                    setPlayerIndex((prev) => prev + 1);
-                  }}
+                  playerIndex={playerIdx}
+                  onHit={onHit}
+                  onStand={onStand}
+                  onDealerGotBlackJack={onDealerGotBlackJack}
+                  // onBusted={}
                   playerInfo={player}
                 />
                 {i === DeckSeat ? (
