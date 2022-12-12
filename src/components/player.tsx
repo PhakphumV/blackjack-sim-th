@@ -53,7 +53,11 @@ PlayerHandProp) => {
   // }
 
   useEffect(() => {
-    if (points.currentPoint >= 21 && isReady && playerInfo?.isPlayerActive) {
+    if (
+      (points.isBlackJack || points.currentPoint >= 21) &&
+      isReady &&
+      playerInfo?.isPlayerActive
+    ) {
       onStand(playerIndex);
     }
   }, [points, isReady, onStand, playerInfo, playerIndex]);
@@ -63,7 +67,7 @@ PlayerHandProp) => {
   return (
     <Grid container direction="row" justifyContent="center" alignItems="center">
       <Grid item sx={{ textAlign: "center" }}>
-        {playerInfo.name}
+        {playerInfo.name} {points.isBlackJack ? "has BLACKJACK!!" : ""}
       </Grid>
       <Grid item container direction="row" sx={{ textAlign: "center" }}>
         {playerInfo.cards.map((card) => (
@@ -81,7 +85,8 @@ PlayerHandProp) => {
       {playerInfo.isPlayerActive &&
       isReady &&
       playerInfo.isPlayer &&
-      points.currentPoint < 21 ? (
+      points.currentPoint < 21 &&
+      !points.isBlackJack ? (
         <Grid
           item
           container

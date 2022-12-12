@@ -148,7 +148,7 @@ function App() {
     });
   }, [playerIndex]);
 
-  // console.log("playerIndex", playerIndex);
+  console.log("playerIndex", playerIndex);
   return (
     <div className="App">
       <Grid container spacing={2} direction="row" sx={{ minHeight: "100vh" }}>
