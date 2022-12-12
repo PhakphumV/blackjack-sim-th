@@ -53,8 +53,7 @@ PlayerHandProp) => {
   // }
 
   useEffect(() => {
-    if (points.currentPoint > 21 && isReady && playerInfo?.isPlayerActive) {
-      console.log("Player busted", playerIndex);
+    if (points.currentPoint >= 21 && isReady && playerInfo?.isPlayerActive) {
       onStand(playerIndex);
     }
   }, [points, isReady, onStand, playerInfo, playerIndex]);
