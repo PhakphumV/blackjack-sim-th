@@ -63,3 +63,32 @@ export const cards: CardProp[] = [
 ];
 
 export const shuffleCards = () => shuffle(cards);
+
+export const calculateBlackJackPoint = (cards: CardProp[]): number[] => {
+  const points = [0, 0];
+  cards.forEach((card) => {
+    if (Array.isArray(card.point)) {
+      points[0] += card.point[0];
+      points[1] += card.point[1];
+    } else {
+      points[0] += card.point;
+      points[1] += card.point;
+    }
+  });
+
+  return points;
+};
+
+export const getCurrentPoint = (points: number[]): number => {
+  let pointsLowerThan21 = points.filter((point) => point <= 21);
+  if (pointsLowerThan21.length === 0) {
+    return Math.min(...points);
+  }
+  return Math.max(...pointsLowerThan21);
+};
+
+export const isBlackJack = (cards: CardProp[]): boolean => {
+  const points = calculateBlackJackPoint(cards);
+  const currentPoint = getCurrentPoint(points);
+  return cards.length === 2 && currentPoint === 21;
+};

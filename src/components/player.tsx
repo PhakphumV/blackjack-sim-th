@@ -1,20 +1,64 @@
-import { Grid, Button } from "@mui/material";
+import { useMemo, useEffect } from "react";
+import { Grid, Button, Typography } from "@mui/material";
+import {
+  calculateBlackJackPoint,
+  getCurrentPoint,
+  isBlackJack,
+} from "../helpers/cards";
 import { BlackJacker, CardProp } from "../helpers/interfaces";
 import Card from "./cards";
 
 interface PlayerHandProp {
   playerInfo: BlackJacker | undefined;
+  playerIndex: number;
   isReady: boolean;
-  onHit: () => void;
-  onStand: () => void;
+  onHit: (playerIdx: number) => void;
+  onStand: (playerIdx: number) => void;
+  // onBusted: (playerIdx: number) => void;
+}
+
+interface UserPoint {
+  currentPoint: number;
+  points: number[];
+  isBlackJack: boolean;
 }
 
 const PlayerHand = ({
   playerInfo,
   isReady,
+  playerIndex,
   onHit,
   onStand,
-}: PlayerHandProp) => {
+}: // onBusted,
+PlayerHandProp) => {
+  const points = useMemo<UserPoint>(() => {
+    if (!playerInfo) {
+      return {
+        currentPoint: 0,
+        points: [],
+        isBlackJack: false,
+      };
+    }
+    const points = calculateBlackJackPoint(playerInfo.cards);
+    const currentPoint = getCurrentPoint(points);
+    return {
+      currentPoint: currentPoint,
+      points: points,
+      isBlackJack: isBlackJack(playerInfo.cards),
+    };
+  }, [playerInfo]);
+
+  // if (points[0] > 21 && points[1] > 21) {
+  //   onStand();
+  // }
+
+  useEffect(() => {
+    if (points.currentPoint > 21 && isReady && playerInfo?.isPlayerActive) {
+      console.log("Player busted", playerIndex);
+      onStand(playerIndex);
+    }
+  }, [points, isReady, onStand, playerInfo, playerIndex]);
+
   if (!playerInfo) return null;
 
   return (
@@ -35,7 +79,10 @@ const PlayerHand = ({
           </Grid>
         ))}
       </Grid>
-      {playerInfo.isPlayerActive && isReady && playerInfo.isPlayer ? (
+      {playerInfo.isPlayerActive &&
+      isReady &&
+      playerInfo.isPlayer &&
+      points.currentPoint < 21 ? (
         <Grid
           item
           container
@@ -44,14 +91,17 @@ const PlayerHand = ({
           paddingRight={2}
         >
           <Grid item>
-            <Button variant="outlined" onClick={onStand}>
+            <Button variant="outlined" onClick={() => onStand(playerIndex)}>
               Stand
             </Button>
           </Grid>
           <Grid item>
-            <Button variant="contained" onClick={onHit}>
+            <Button variant="contained" onClick={() => onHit(playerIndex)}>
               Hit
             </Button>
+          </Grid>
+          <Grid item>
+            <Typography>{points.currentPoint}</Typography>
           </Grid>
         </Grid>
       ) : null}
