@@ -14,6 +14,7 @@ interface PlayerHandProp {
   isReady: boolean;
   onHit: (playerIdx: number) => void;
   onStand: (playerIdx: number) => void;
+  onDealerGotBlackJack: () => void;
   // onBusted: (playerIdx: number) => void;
 }
 
@@ -29,6 +30,7 @@ const PlayerHand = ({
   playerIndex,
   onHit,
   onStand,
+  onDealerGotBlackJack,
 }: // onBusted,
 PlayerHandProp) => {
   const points = useMemo<UserPoint>(() => {
@@ -53,21 +55,43 @@ PlayerHandProp) => {
   // }
 
   useEffect(() => {
-    if (
-      (points.isBlackJack || points.currentPoint >= 21) &&
-      isReady &&
-      playerInfo?.isPlayerActive
-    ) {
+    if (!isReady) return;
+
+    if (playerInfo?.isPlayer === false && points.isBlackJack) {
+      // TODO: end game
+      onDealerGotBlackJack();
+      return;
+    }
+
+    if (playerInfo?.isPlayerActive === false) return;
+
+    if (playerInfo?.isPlayer === false) {
+      if (points.currentPoint < 17) {
+        onHit(playerIndex);
+      }
+    }
+
+    if (points.isBlackJack || points.currentPoint >= 21) {
       onStand(playerIndex);
     }
-  }, [points, isReady, onStand, playerInfo, playerIndex]);
+  }, [
+    points,
+    isReady,
+    playerInfo,
+    playerIndex,
+    onStand,
+    onHit,
+    onDealerGotBlackJack,
+  ]);
 
   if (!playerInfo) return null;
 
   return (
     <Grid container direction="row" justifyContent="center" alignItems="center">
       <Grid item sx={{ textAlign: "center" }}>
-        {playerInfo.name} {points.isBlackJack ? "has BLACKJACK!!" : ""}
+        {playerInfo.name}{" "}
+        {points.isBlackJack && playerInfo.isPlayer ? "has BLACKJACK!!" : ""}
+        {points.currentPoint}
       </Grid>
       <Grid item container direction="row" sx={{ textAlign: "center" }}>
         {playerInfo.cards.map((card) => (

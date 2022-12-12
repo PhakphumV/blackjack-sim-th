@@ -83,6 +83,8 @@ function App() {
     setPlayerIndex((prev) => playerIdx + 1);
   };
 
+  const onDealerGotBlackJack = () => {};
+
   // const onBusted = React.useCallback(() => {
   //   return (playerIdx: number) => {
   //     setPlayerIndex((prev) => prev + 1);
@@ -164,6 +166,7 @@ function App() {
                   playerIndex={playerIdx}
                   onHit={onHit}
                   onStand={onStand}
+                  onDealerGotBlackJack={onDealerGotBlackJack}
                   // onBusted={}
                   playerInfo={player}
                 />
